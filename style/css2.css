@@ -1,0 +1,33 @@
+body{
+line-height:1.5em; margin: 0; background:#f3f3f3;
+}
+a{
+text-decoration:none;
+color:#075DE3;
+}
+img.logo{width:14px;height:14px;margin:0 5px 0 3px;}
+.h
+{padding:3px;
+background-color:#2F4F4F;
+color:#7FFFD4;
+}
+.h a{color:#7FFFD4;}
+.box
+{padding:3px;
+background-color:#f3f3f3;
+}
+.row
+{padding:3px;
+background-color:#fff;
+}
+.nav,.copy
+{
+padding:3px;
+text-align:center;
+border-top:1px solid #CECECE;
+background-color:#AAE25B;
+}
+.copy a
+{
+color:gray;
+}

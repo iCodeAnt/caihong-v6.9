@@ -1,0 +1,69 @@
+<?php
+/*单向检测
+Author:云影 QQ8711973
+Modifier:消失的彩虹海
+*/
+error_reporting(0);
+function ifdx($qq, $jcqq, $sid)
+{
+	$url = get_curl("http://m.qzone.com/friendship/get_friendship?g_tk=" . time() . "&fromuin=$jcqq&touin=" . $qq . "&isReverse=1&res_type=4&refresh_type=1&format=json&sid=" . $sid);
+	$json = json_decode($url, true);//print_r($json);
+
+	if ($json["code"] == 0) {
+
+	if ($json["message"] == "请先登录") {
+		exit("<script language='javascript'>alert('SID已失效，请更新SID！');top.location.href='../../index.php?mod=qqlist'</script>");
+	}
+	else if ($json["data"]["friendShip"][0]["add_friend_time"] == "-1") {
+		exit('<font color="red">单向</font>');
+	}
+	else {
+		exit('<font color="green">正常</font>');
+	}
+	}else{
+		exit('<font color="red">失败</font>');
+	}
+}
+
+function get_curl($url, $post, $referer, $cookie, $header, $ua, $nobaody)
+{
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	if ($post) {
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+	}
+	if ($header) {
+		curl_setopt($ch, CURLOPT_HEADER, true);
+	}
+	if ($cookie) {
+		curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+	}
+	if ($referer) {
+		curl_setopt($ch, CURLOPT_REFERER, "http://m.qzone.com/infocenter?g_f=");
+	}
+	if ($ua) {
+		curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+	}
+	else {
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Linux; U; Android 4.0.4; es-mx; HTC_One_X Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0");
+	}
+	if ($nobaody) {
+		curl_setopt($ch, CURLOPT_NOBODY, 1);
+	}
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$ret = curl_exec($ch);
+	curl_close($ch);
+	return $ret;
+}
+
+@header("Content-Type: text/html; charset=UTF-8");
+$uin = $_GET["uin"];
+$sid = $_GET["sid"];
+$touin = $_GET["touin"];
+if(!$uin||!$sid||!$touin)exit;
+
+ifdx($uin, $touin, $sid);
+
+?>
